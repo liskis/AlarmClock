@@ -101,6 +101,7 @@ class AlarmClock {
     }
     func cancelAlarm(){
         timer?.invalidate()
+        print("アラームを止めました。")
     }
 }
 
