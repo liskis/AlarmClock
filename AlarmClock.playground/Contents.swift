@@ -11,14 +11,16 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 class AlarmClock {
-    
+//    音が鳴っている時間
     var ringDistance = 5
+//    音の種類
     var ringSount = "ピピピッ"
     enum Sound {
         case pipipi
         case beepbeep
         case wakeUp
     }
+//    タイムゾーン
     var timeZone = "Asia/Tokyo"
     enum Zone {
         case tokyo
@@ -26,7 +28,9 @@ class AlarmClock {
         case london
     }
     var timer: Timer?
-    var setTime: String = ""
+//    アラームを鳴らす時刻
+    var alermTime: String = ""
+//    時刻表示のフォーマット
     var dateFormatter: DateFormatter {
         let df = DateFormatter()
         df.dateStyle = .long
@@ -35,27 +39,29 @@ class AlarmClock {
         df.dateFormat = "HH:mm:ss"
         return df
     }
-    
-    func setAlarm(setTime: String){
-        self.setTime = setTime
-        print("\(setTime)にアラームがセットされました。")
+//    時刻をセットしてアラームを起動します。
+    func setAlarm(alermTime: String){
+        self.alermTime = alermTime
+        print("\(alermTime)にアラームがセットされました。")
         timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
-            selector: #selector(checkTime),
+            selector: #selector(countDown),
             userInfo: nil,
             repeats: true
         )
     }
-    @objc func checkTime() {
+//    セットされた時間と現在時刻を比較します。
+    @objc func countDown() {
         let now = dateFormatter.string(from: Date())
-        if now == self.setTime {
-            print("\(self.setTime)になりました")
+        if now == self.alermTime {
+            print("\(self.alermTime)になりました")
             timer?.invalidate()
             ringAlarm()
         }
     }
-    @objc func ringAlarm(){
+//    アラームを鳴らします。
+    func ringAlarm(){
         timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
@@ -64,6 +70,7 @@ class AlarmClock {
             repeats: true
         )
     }
+//    指定した時間分アラームを鳴らしたらストップします。
     @objc func stopAlarm(){
         print("\(ringSount)")
         ringDistance -= 1
@@ -71,10 +78,11 @@ class AlarmClock {
             timer?.invalidate()
         }
     }
-    
+//    アラームが止まるまでの時間を設定
     func changeDistance(ringDistance: Int){
         self.ringDistance = ringDistance
     }
+//    アラームの音を変更する
     func changeSound(sound: Sound){
         switch sound {
         case .pipipi:
@@ -85,6 +93,7 @@ class AlarmClock {
             self.ringSount = "起きろー！"
         }
     }
+//    タイムゾーンを変更する
     func changeTimeZone(timeZone: Zone){
         switch timeZone {
         case .tokyo:
@@ -95,10 +104,12 @@ class AlarmClock {
             self.timeZone = "Europe/London"
         }
     }
+//    現在時刻を表示する
     func whatTimeIsIt(){
         let now = dateFormatter.string(from: Date())
         print(now)
     }
+//    アラームを止める
     func cancelAlarm(){
         timer?.invalidate()
         print("アラームを止めました。")
@@ -110,5 +121,5 @@ alarmClock.changeDistance(ringDistance: 10)
 alarmClock.changeSound(sound: .wakeUp)
 alarmClock.changeTimeZone(timeZone: .hawai)
 alarmClock.whatTimeIsIt()
-alarmClock.setAlarm(setTime: "15:50:00")
+alarmClock.setAlarm(alermTime: "15:50:00")
 alarmClock.cancelAlarm()
