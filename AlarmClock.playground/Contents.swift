@@ -12,9 +12,9 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 class AlarmClock {
 //    音が鳴っている時間
-    var ringDistance = 5
+    var lengthOfSound = 5
 //    音の種類
-    var ringSount = "ピピピッ"
+    var ringSound = "ピピピッ"
     enum Sound {
         case pipipi
         case beepbeep
@@ -40,19 +40,19 @@ class AlarmClock {
         return df
     }
 //    時刻をセットしてアラームを起動します。
-    func setAlarm(alermTime: String){
+    func setAndStartAlarm(alermTime: String){
         self.alermTime = alermTime
         print("\(alermTime)にアラームがセットされました。")
         timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
-            selector: #selector(countDown),
+            selector: #selector(compareTimes),
             userInfo: nil,
             repeats: true
         )
     }
 //    セットされた時間と現在時刻を比較します。
-    @objc func countDown() {
+    @objc func compareTimes() {
         let now = dateFormatter.string(from: Date())
         if now == self.alermTime {
             print("\(self.alermTime)になりました")
@@ -72,25 +72,25 @@ class AlarmClock {
     }
 //    指定した時間分アラームを鳴らしたらストップします。
     @objc func stopAlarm(){
-        print("\(ringSount)")
-        ringDistance -= 1
-        if ringDistance == 0 {
+        print("\(ringSound)")
+        lengthOfSound -= 1
+        if lengthOfSound == 0 {
             timer?.invalidate()
         }
     }
 //    アラームが止まるまでの時間を設定
-    func changeDistance(ringDistance: Int){
-        self.ringDistance = ringDistance
+    func changeDistance(lengthOfSound: Int){
+        self.lengthOfSound = lengthOfSound
     }
 //    アラームの音を変更する
     func changeSound(sound: Sound){
         switch sound {
         case .pipipi:
-            self.ringSount = "ピピピッ"
+            self.ringSound = "ピピピッ"
         case .beepbeep:
-            self.ringSount = "ピー、ピー、"
+            self.ringSound = "ピー、ピー、"
         case .wakeUp:
-            self.ringSount = "起きろー！"
+            self.ringSound = "起きろー！"
         }
     }
 //    タイムゾーンを変更する
@@ -117,9 +117,9 @@ class AlarmClock {
 }
 
 let alarmClock = AlarmClock()
-alarmClock.changeDistance(ringDistance: 10)
+alarmClock.changeDistance(lengthOfSound: 10)
 alarmClock.changeSound(sound: .wakeUp)
 alarmClock.changeTimeZone(timeZone: .hawai)
 alarmClock.whatTimeIsIt()
-alarmClock.setAlarm(alermTime: "15:50:00")
+alarmClock.setAndStartAlarm(alermTime: "21:46:30")
 alarmClock.cancelAlarm()
