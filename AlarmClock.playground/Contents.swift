@@ -1,11 +1,3 @@
-//現在の時刻を表示
-//アラームが鳴る時刻を24時間表記で設定する
-//指定時間になるとアラームが鳴る
-//アラームの音を変更できるデフォルトは"ピピピッ"
-//アラームが止まるまでの時間を設定できる。デフォルトは5秒
-//世界時計に対応。デフォルトは"Asia/Tokyo”
-//アラームを途中で止めることができる
-
 import Foundation
 import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
